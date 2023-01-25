@@ -18,11 +18,11 @@ COLORES_FIGURAS = [
 FIGURAS = [
     [[1, 2, 5, 6]], # Cuadrado
     [[1, 5, 9, 13], [4, 5, 6, 7]], # I-Vertical, I-Horizontal
-    [[1, 4, 5, 6], [1, 4, 5, 9], [4, 5, 6, 9], [1, 5, 6, 9]], # T-Arr, T-Izq, T-Aba, T-Der
-    [[1, 2, 6, 10], [5, 6, 7, 9], [2, 6, 10, 11], [3, 5, 6, 7]], # L'-Izq, L'-Aba, L'-Der, L'-Arr
-    [[1, 2, 5, 9], [0, 4, 5, 6], [1, 5, 9, 8], [4, 5, 6, 10]], # L-Der, L-Arr, L-Izq, L-Aba
-    [[4, 5, 9, 10], [2, 6, 5, 9]], # Z, Z-Vertical
-    [[6, 7, 9, 10], [1, 5, 6, 10]], # Z', Z'-Vertical
+    #[[1, 4, 5, 6], [1, 4, 5, 9], [4, 5, 6, 9], [1, 5, 6, 9]], # T-Arr, T-Izq, T-Aba, T-Der
+    #[[1, 2, 6, 10], [5, 6, 7, 9], [2, 6, 10, 11], [3, 5, 6, 7]], # L'-Izq, L'-Aba, L'-Der, L'-Arr
+    #[[1, 2, 5, 9], [0, 4, 5, 6], [1, 5, 9, 8], [4, 5, 6, 10]], # L-Der, L-Arr, L-Izq, L-Aba
+    #[[4, 5, 9, 10], [2, 6, 5, 9]], # Z, Z-Vertical
+    #[[6, 7, 9, 10], [1, 5, 6, 10]], # Z', Z'-Vertical
 ]
 
 class Figura:
@@ -74,17 +74,18 @@ class Tetris:
     def nueva_figura(self):
         self.figura = Figura(3, 0)
 
-    def choque(self):
-        choque = False
-        for i in range(4):
-            for j in range(4):
-                if i * 4 + j in self.figura.contorno():
+    def intersecta_bordes(self):
+        FIGURA_WIDTH = len(FIGURAS[0]);
+        intersecta = False
+        for i in range(FIGURA_WIDTH):
+            for j in range(FIGURA_WIDTH):
+                if i * FIGURA_WIDTH + j in self.figura.contorno():
                     if i + self.figura.y > self.height - 1 or \
                             j + self.figura.x > self.width - 1 or \
                             j + self.figura.x < 0 or \
                             self.tablero[i + self.figura.y][j + self.figura.x] > 0:
-                        choque = True
-        return choque
+                        intersecta = True
+        return intersecta
 
     def break_lines(self):
         lines = 0
